@@ -168,6 +168,11 @@ public class PageNavigation {
     static int pageNumber = 1;
     static int pageSize = 8;
     static int totalPages = (userList.size() + pageSize - 1) / pageSize;
+    static int offSet = (pageNumber - 1) * pageSize;
+
+    static void setPageNumber(int pageNum) {
+        pageNumber = pageNum;
+    }
 
     public static void main(String[] args) {
 
@@ -188,16 +193,21 @@ public class PageNavigation {
 
             switch (option) {
                 case 1 -> {
-                    List<User> pagedUser = userList.stream()
-                            .skip((pageNumber - 1) * pageSize)
-                            .limit(pageSize)
-                            .toList();
-                    showUserList(pagedUser);
+                    showUserList(userList, offSet, pageSize);
                     System.out.println("Page " + pageNumber + " of " + totalPages);
                 }
-                case 2 -> {}
-                case 3 -> {}
-                case 4 -> {}
+                case 2 -> {
+                    System.out.print("Enter page size: ");
+                    pageSize = Integer.parseInt(scanner.nextLine());
+                }
+                case 3 -> {
+                    setPageNumber(pageNumber + 1);
+                    showUserList(userList, offSet, pageSize);
+                }
+                case 4 -> {
+                    pageNumber--;
+//                    showUserList(userList);
+                }
                 default -> System.out.println("Invalid option!");
             }
 
@@ -205,7 +215,7 @@ public class PageNavigation {
 
     }
 
-    public static void showUserList(List<User> users) {
+    public static void showUserList(List<User> users, int offSet, int limit) {
         Table table = new Table(
                 6, BorderStyle.CLASSIC );
 
@@ -216,7 +226,10 @@ public class PageNavigation {
         table.addCell(" Created At ");
         table.addCell(" Updated At ");
 
-        users.forEach(user -> {
+        users.stream()
+                .skip(offSet)
+                .limit(limit)
+                .forEach(user -> {
             table.addCell(user.getId().toString());
             table.addCell(user.getFullName());
             table.addCell(user.getUsername());
