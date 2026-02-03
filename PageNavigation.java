@@ -6,6 +6,7 @@ import org.nocrala.tools.texttablefmt.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -248,6 +249,7 @@ public class PageNavigation {
         table.addCell(" Updated At ");
 
         users.stream()
+                .sorted(Comparator.comparing(User::getFullName))
                 .skip(offSet)
                 .limit(limit)
                 .forEach(user -> {
