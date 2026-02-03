@@ -222,9 +222,13 @@ public class PageNavigation {
                 case 5 -> {
                     System.out.print("Enter page you want to go to: ");
                     int goToPage = Integer.parseInt(scanner.nextLine());
-                    setPageNumber(goToPage);
-                    showUserList(userList, offSet, pageSize);
-                    System.out.println("Page " + pageNumber + " of " + totalPages);
+                    if (goToPage > totalPages || goToPage < 1) {
+                        System.out.println("Page doesn't exist");
+                    } else {
+                        setPageNumber(goToPage);
+                        showUserList(userList, offSet, pageSize);
+                        System.out.println("Page " + pageNumber + " of " + totalPages);
+                    }
                 }
                 default -> System.out.println("Invalid option!");
             }
