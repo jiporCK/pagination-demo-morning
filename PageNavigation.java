@@ -171,7 +171,16 @@ public class PageNavigation {
     static int offSet = (pageNumber - 1) * pageSize;
 
     static void setPageNumber(int pageNum) {
+        if (pageNum < 1) {
+            pageNumber = 1;
+            return;
+        }
+        if (pageNum > totalPages) {
+            pageNumber = totalPages;
+            return;
+        }
         pageNumber = pageNum;
+        offSet = (pageNumber - 1) * pageSize;
     }
 
     public static void main(String[] args) {
@@ -203,16 +212,24 @@ public class PageNavigation {
                 case 3 -> {
                     setPageNumber(pageNumber + 1);
                     showUserList(userList, offSet, pageSize);
+                    System.out.println("Page " + pageNumber + " of " + totalPages);
                 }
                 case 4 -> {
-                    pageNumber--;
-//                    showUserList(userList);
+                    setPageNumber(pageNumber - 1);
+                    showUserList(userList, offSet, pageSize);
+                    System.out.println("Page " + pageNumber + " of " + totalPages);
+                }
+                case 5 -> {
+                    System.out.print("Enter page you want to go to: ");
+                    int goToPage = Integer.parseInt(scanner.nextLine());
+                    setPageNumber(goToPage);
+                    showUserList(userList, offSet, pageSize);
+                    System.out.println("Page " + pageNumber + " of " + totalPages);
                 }
                 default -> System.out.println("Invalid option!");
             }
 
         }
-
     }
 
     public static void showUserList(List<User> users, int offSet, int limit) {
